@@ -30,4 +30,4 @@ jobs:
 
     steps:
       - name: deploy
-        run: "echo Deploying ${{ github.event.inputs.environment }} with image ${{ github.event.inputs.imageName }} and digest ${{ github.event.inputs.digest }} ${{ vars.WORKSHOP_ENV_VARIABLE }} ${{ vars.imageName }}"
+        run: "echo Deploying ${{ inputs.environment }} with image ${{ inputs.imageName }} and digest ${{ inputs.digest }}"
