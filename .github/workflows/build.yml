@@ -10,6 +10,9 @@ jobs:
     permissions:
       packages: write
     runs-on: "ubuntu-latest"
+    outputs:
+      imageName: fromJson(jobs.build.outputs.metadata)['image.name']
+      digest: fromJson(jobs.build.outputs.metadata)['digest']
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -26,7 +29,20 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build and push Docker image
+        id: build-push
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ghcr.io/${{ env.DOCKER_IMAGE_NAME }}:latest
+  deploy-test:
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: "test"
+      imageName: ${{ needs.build.outputs.imageName }}
+      digest: ${{ needs.build.outputs.digest }}
+  deploy-production:
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: "prod"
+      imageName: ${{ needs.build.outputs.imageName }}
+      digest: ${{ needs.build.outputs.digest }}
