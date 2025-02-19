@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: string
+      imageName:
+        required: true
+        type: string
+      digest:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: deploy
+        run: "echo Deploying ${{ github.event.inputs.environment }} with image ${{ github.event.inputs.imageName }} and digest ${{ github.event.inputs.digest }}"
