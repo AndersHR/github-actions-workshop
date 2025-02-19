@@ -7,27 +7,10 @@ on:
   workflow_dispatch: # Triggers when a user manually requests a workflow to run
 
 jobs:
-  test: # The 'build' job
-    name: "Build application"
-    runs-on: "ubuntu-latest"
-    steps:
-      # Checkout code
-      - uses: actions/checkout@v4
-
-      # Install go 1.21
-      - name: Setup go
-        uses: actions/setup-go@v5
-        with: # Specify input variables to the action
-          go-version: "1.21.x"
-
-      # Shell script to print the version
-      - run: go version
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Test
-        run: go test ./...
+  call-workflow-passing-data:
+    uses: ./.github/workflows/go-test.yml
+    with:
+      config-value: "Some value"
   lint:
     # Also add checkout and setup go steps here, like in previous tasks
     runs-on: ubuntu-latest
