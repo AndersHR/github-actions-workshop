@@ -35,12 +35,14 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.DOCKER_IMAGE_NAME }}:latest
   deploy-test:
+    needs: build
     uses: ./.github/workflows/deploy.yml
     with:
       environment: "test"
       imageName: ${{ needs.build.outputs.imageName }}
       digest: ${{ needs.build.outputs.digest }}
   deploy-production:
+    needs: build
     uses: ./.github/workflows/deploy.yml
     with:
       environment: "prod"
